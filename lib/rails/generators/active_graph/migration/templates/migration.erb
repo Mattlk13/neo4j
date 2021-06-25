@@ -1,0 +1,9 @@
+class <%= @migration_class_name.underscore.camelize %> < ActiveGraph::Migrations::Base
+  def up
+    <%= @content %>
+  end
+
+  def down
+    raise ActiveGraph::IrreversibleMigration
+  end
+end

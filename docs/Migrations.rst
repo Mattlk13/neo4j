@@ -5,7 +5,7 @@ Neo4j does not have a set schema like relational databases, but sometimes change
 
 .. note::
 
-  If you are new to Neo4j, note that properties on nodes and relationships are not defined ahead of time.  Properties can be added and removed on the fly, and so adding a ``property`` to your ``ActiveNode`` or ``ActiveRel`` model is sufficient to start storing data.  No migration is needed to add properties, but if you remove a property from your model you may want a migration to cleanup the data (by using the ``remove_property``, for example).
+  If you are new to Neo4j, note that properties on nodes and relationships are not defined ahead of time.  Properties can be added and removed on the fly, and so adding a ``property`` to your ``Node`` or ``Relationship`` model is sufficient to start storing data.  No migration is needed to add properties, but if you remove a property from your model you may want a migration to cleanup the data (by using the ``remove_property``, for example).
 
 .. note::
 
@@ -24,7 +24,7 @@ This will generate a new file located in ``db/neo4j/migrate/xxxxxxxxxx_rename_us
 
 .. code-block:: ruby
 
-  class RenameUserNameToFirstName < Neo4j::Migrations::Base
+  class RenameUserNameToFirstName < ActiveGraph::Migrations::Base
     def up
       rename_property :User, :name, :first_name
     end
@@ -47,7 +47,7 @@ To disable this, you can use the ``disable_transactions!`` helper in your migrat
 
 .. code-block:: ruby
 
-  class SomeMigration < Neo4j::Migrations::Base
+  class SomeMigration < ActiveGraph::Migrations::Base
     disable_transactions!
 
     ...
@@ -122,7 +122,7 @@ Reverts the last up migration. You can additionally pass a ``STEPS`` parameter, 
     rake neo4j:rollback
 
 neo4j:schema:dump
-~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 
 Reads the current database and generates a ``db/neo4j/schema.yml`` file to track constraints, indexes, and migrations which have been run (runs automatically after the ``neo4j:migrate`` task)
 
@@ -131,7 +131,7 @@ Reads the current database and generates a ``db/neo4j/schema.yml`` file to track
     rake neo4j:schema:dump
 
 neo4j:schema:load
-~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 
 Reads the ``db/neo4j/schema.yml`` file and loads the constraints, indexes, and migration nodes into the database.  The default behavior is to only add, but an argument can be passed in to tell the task to remove any indexes / constraints that were found in the database which were not in the ``schema.yml`` file.
 
@@ -172,7 +172,7 @@ Executes a pure neo4j cypher query, interpolating parameters.
 #query
 ~~~~~~
 
-An alias for ``Neo4j::Session.query``. You can use it as root for the query builder:
+An alias for ``ActiveGraph::Session.query``. You can use it as root for the query builder:
 
 .. code-block:: ruby
 

@@ -3,6 +3,70 @@ All notable changes to this project will be documented in this file.
 This file should follow the standards specified on [http://keepachangelog.com/]
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [11.0.0] 2021-06-25
+
+## Added
+
+- support for neo4j 4.1, 4.2, 4.3
+
+## [10.1.0] 2021-02-05
+
+## Added
+
+- support for ruby 3.0.0
+
+## [10.0.2] 2020-12-08
+
+## Fixed
+
+- fixed bad require (https://github.com/neo4jrb/activegraph/issues/1634)
+- removed unused exception class (Thanks @joshjordan)
+- prevented after_commit callbacks from being called multiple times (Thanks @joshjordan)
+
+## [10.0.1] 2020-07-26
+
+## Fixed
+
+- fixed incorrect id comparison, which could result in lost relationships (https://github.com/neo4jrb/activegraph/issues/1611)
+- brought back BigDecimalConverter
+- fixed rails template (Thanks @ekampp)
+
+## [10.0.0] 2020-07-06
+
+- neo4j 4.0 support (default database only)
+- dropped support for neo4j 3.3 or earlier
+- full bolt support
+- full causal cluster support
+- removal of http support
+- removal of embedded support (neo4j embedded is still supported via bolt)
+- support for a neo4j ruby driver with an api of the official drivers
+- discontinuation of the ``neo4j-core`` gem. Its functionality is replaced partially by ``neo4j-ruby-driver`` and
+   partially by ``activegraph``
+- higher naming consistency with ``activerecord`` and the official ``neo4j-java-driver``
+- configuration more consistent with ``activerecord``
+- changed transaction API
+- support for sessions with bookmarks and read and write transaction
+- enforcing has one constraint on relationships
+- better handling of has_many (no deletion and recreation)
+- executing association callbacks on relationship deletion
+
+## [9.6.1] 2019-12-18
+
+## Fixed
+
+- Fixed duplicate records with with_associations on QueryProxy. (#1576)
+
+## [9.6.0] 2019-09-3
+
+## Added
+
+- support for activemodel and activesupport version 6 (thanks @mrhardikjoshi)
+
+## Fixed
+
+- fixed cypher generation for `remove_property` (thanks @lshimokawa)
+- cleaned up deprecations, unused files and badges (thanks @olleolleolle)
+
 ## [9.5.3] 2019-08-16
 
 ## Fixed

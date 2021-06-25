@@ -1,24 +1,17 @@
-# Welcome to Neo4j.rb
+# Welcome to Active Graph (f.k.a. Neo4j.rb)
 
 ## Code Status
 
 [![Actively Maintained](https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
-[![Build Status](https://secure.travis-ci.org/neo4jrb/neo4j.png?branch=master)](http://travis-ci.org/neo4jrb/neo4j)
-[![Coverage Status](https://coveralls.io/repos/neo4jrb/neo4j/badge.png?branch=master)](https://coveralls.io/r/neo4jrb/neo4j?branch=master)
-[![Code Climate](https://codeclimate.com/github/neo4jrb/neo4j.png)](https://codeclimate.com/github/neo4jrb/neo4j)
-[![PullReview stats](https://www.pullreview.com/github/neo4jrb/neo4j/badges/master.svg?)](https://www.pullreview.com/github/neo4jrb/neo4j/reviews/master)
-
-## Issues
-
-[![Next Release](https://badge.waffle.io/neo4jrb/neo4j.png?label=Next%20Release&title=Next%20Release) ![In Progress](https://badge.waffle.io/neo4jrb/neo4j.png?label=In%20Progress&title=In%20Progress) ![In Master](https://badge.waffle.io/neo4jrb/neo4j.png?label=In%20Master&title=In%20Master)](https://waffle.io/neo4jrb/neo4j)
-
-[![Post an issue](https://img.shields.io/badge/Bug%3F-Post%20an%20issue!-blue.svg)](https://waffle.io/neo4jrb/neo4j)
+[![Build Status](https://secure.travis-ci.org/neo4jrb/neo4j.svg?branch=master)](http://travis-ci.org/neo4jrb/neo4j)
+[![Coverage Status](https://coveralls.io/repos/neo4jrb/neo4j/badge.svg?branch=master)](https://coveralls.io/r/neo4jrb/neo4j?branch=master)
+[![Code Climate](https://codeclimate.com/github/neo4jrb/neo4j.svg)](https://codeclimate.com/github/neo4jrb/neo4j)
 
 ## Get Support
 
 ### Documentation
 
-All new documentation will be done via our [readthedocs](http://neo4jrb.readthedocs.org) site, though some old documentation has yet to be moved from our [wiki](https://github.com/neo4jrb/neo4j/wiki) (also there is the [neo4j-core wiki](https://github.com/neo4jrb/neo4j-core/wiki))
+All new documentation will be done via our [readthedocs](http://neo4jrb.readthedocs.org) site, though some old documentation has yet to be moved from our [wiki](https://github.com/neo4jrb/neo4j/wiki) 
 
 ### Contact Us
 
@@ -28,7 +21,7 @@ All new documentation will be done via our [readthedocs](http://neo4jrb.readthed
 
 # Introduction
 
-Neo4j.rb is an Active Model compliant Ruby/JRuby wrapper for [the Neo4j graph database](http://www.neo4j.org/). It uses the [neo4j-core](https://github.com/neo4jrb/neo4j-core) and [active_attr](https://github.com/cgriego/active_attr) gems.
+Neo4j.rb is an Active Model compliant Ruby/JRuby wrapper for [the Neo4j graph database](http://www.neo4j.org/). It uses the [neo4j-ruby-driver](https://github.com/neo4jrb/neo4j-ruby-driver) and [active_attr](https://github.com/cgriego/active_attr) gems.
 
 Neo4j is a transactional, open-source graph database.  A graph database manages data in a connected data structure, capable of  representing any kind of data in a very accessible way.  Information is stored in nodes and relationships connecting them, both of which can have arbitrary properties.  To learn more visit [What is a Graph Database?](http://neo4j.com/developer/graph-database/)
 
@@ -52,27 +45,34 @@ Neo4j.rb v4.1.0 was released in January of 2015. Its changes are outlined [here]
 
 ## Neo4j version support
 
-| **Neo4j Version** | v2.x | v3.x  | >= v4.x | >= 7.0.3 |
-|-------------------|------|-------|---------|----------|
-| 1.9.x             | Yes  | No    | No      | No       |
-| 2.0.x             | No   | Yes   | No      | No       |
-| 2.1.x             | No   | Yes   | Yes *   | Yes      |
-| 2.2.x             | No   | No    | Yes     | Yes      |
-| 2.3.x             | No   | No    | Yes     | Yes      |
-| >= 3.0.0           | No   | No    | No      | Yes      |
+| **Neo4j Version** | v2.x | v3.x  | >= v4.x | >= 7.0.3 | activegraph 10   | activegraph 11 (jRuby only) |
+|-------------------|------|-------|---------|----------|------------------|-----------------------------|
+| 1.9.x             | Yes  | No    | No      | No       | No               | No
+| 2.0.x             | No   | Yes   | No      | No       | No               | No
+| 2.1.x             | No   | Yes   | Yes *   | Yes      | No               | No
+| 2.2.x             | No   | No    | Yes     | Yes      | No               | No
+| 2.3.x             | No   | No    | Yes     | Yes      | No               | No
+| 3.0, 3.1, 3.3     | No   | No    | No      | Yes      | No               | No
+| 3.4               | No   | No    | No      | Yes      | Yes              | No
+| 3.5               | No   | No    | No      | Yes      | Yes              | Yes
+| 4.0               | No   | No    | No      | No       | Yes              | Yes
+| 4.1               | No   | No    | No      | No       | No               | Yes
+| 4.2               | No   | No    | No      | No       | No               | Yes
+| 4.3               | No   | No    | No      | No       | No               | Yes
 
 `*` Neo4j.rb >= 4.x doesn't support Neo4j versions before 2.1.5.  To use 2.1.x you should upgrade to a version >= 2.1.5
 
 ## Neo4j feature support
 
-| **Neo4j Feature**          |   v2.x | v3.x | >= v4.x | >= 8.x |
-|----------------------------|--------|------|---------|--------|
-| Bolt Protocol              |   No   |  No  | No      | Yes    |
-| Auth                       |   No   |  No  | Yes     | Yes    |
-| Remote Cypher              |   Yes  |  Yes | Yes     | Yes    |
-| Transactions               |   Yes  |  Yes | Yes     | Yes    |
-| High Availability          |   No   |  Yes | Yes     | Yes    |
-| Embedded JVM support       |   Yes  |  Yes | Yes     | Yes    |
+| **Neo4j Feature**          |   v2.x | v3.x | >= v4.x | >= 8.x | >= activegraph 10.0 |
+|----------------------------|--------|------|---------|--------|---------------------|
+| Bolt Protocol              |   No   |  No  | No      | Yes    | Yes                 | 
+| Auth                       |   No   |  No  | Yes     | Yes    | Yes                 |
+| Remote Cypher              |   Yes  |  Yes | Yes     | Yes    | No                  |
+| Transactions               |   Yes  |  Yes | Yes     | Yes    | Yes                 |
+| High Availability          |   No   |  Yes | Yes     | Yes    | Yes                 |
+| Causal Cluster             |   No   |  No  | No      | No     | Yes                 |
+| Embedded JVM support       |   Yes  |  Yes | Yes     | Yes    | via bolt only       |
 
 ## Documentation
 

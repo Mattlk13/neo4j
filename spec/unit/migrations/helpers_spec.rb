@@ -1,21 +1,19 @@
-describe Neo4j::Migrations::Helpers do
+describe ActiveGraph::Migrations::Helpers do
   include described_class
-  include Neo4j::Migrations::Helpers::Schema
-  include Neo4j::Migrations::Helpers::IdProperty
-  include Neo4j::Migrations::Helpers::Relationships
+  include ActiveGraph::Migrations::Helpers::Schema
+  include ActiveGraph::Migrations::Helpers::IdProperty
+  include ActiveGraph::Migrations::Helpers::Relationships
 
   before do
     clear_model_memory_caches
-    delete_db
-    delete_schema
 
-    stub_active_node_class('Bookcase') do
+    stub_node_class('Bookcase') do
       has_many :out, :books, type: :has_books
     end
 
     create_constraint(:Book, :name, type: :unique)
     create_index(:Book, :author_name, type: :exact)
-    stub_active_node_class('Book') do
+    stub_node_class('Book') do
       property :name
       property :author_name
     end
@@ -28,7 +26,7 @@ describe Neo4j::Migrations::Helpers do
   describe '#remove_property' do
     it 'removes a property' do
       remove_property :Book, :name
-      expect(Book.all(:n).pluck('n.title')).to eq([nil, nil, nil])
+      expect(Book.all(:n).pluck('n.name')).to eq([nil, nil, nil])
     end
   end
 
@@ -78,7 +76,7 @@ describe Neo4j::Migrations::Helpers do
   describe '#execute' do
     it 'executes plan cypher query with parameters' do
       expect do
-        execute 'MATCH (b:`Book`) WHERE b.name = {book_name} DELETE b', book_name: Book.first.name
+        execute 'MATCH (b:`Book`) WHERE b.name = $book_name DELETE b', book_name: Book.first.name
       end.to change { Book.count }.by(-1)
     end
   end
@@ -110,7 +108,7 @@ describe Neo4j::Migrations::Helpers do
   end
 
   def label_object
-    Neo4j::Core::Label.new(:Book, current_session)
+    ActiveGraph::Core::Label.new(:Book)
   end
 
   describe '#add_constraint' do
@@ -165,8 +163,8 @@ describe Neo4j::Migrations::Helpers do
         execute 'CREATE (d:`Dog`)'
       end
 
-      stub_active_node_class('Cat') {}
-      stub_active_node_class('Dog') do
+      stub_node_class('Cat') {}
+      stub_node_class('Dog') do
         id_property :my_id, on: :generate_id
 
         def generate_id
@@ -214,10 +212,10 @@ describe Neo4j::Migrations::Helpers do
       query.match('(bc:`Bookcase`)').match('(b:`Book`)').create('(bc)-[r:`#has_books` { foo: "bar"}]->(b)').pluck(:r)
 
       old_rels = query.match('()-[r:`#has_books`]->()').pluck(:r)
-      expect(old_rels.map { |e| e.props[:foo] }).to eq(['bar'] * 3)
+      expect(old_rels.map { |e| e.properties[:foo] }).to eq(['bar'] * 3)
       migrate!
       new_rel = query.match('()-[r:`has_books`]->()').pluck(:r)
-      expect(new_rel.map { |e| e.props[:foo] }).to eq(['bar'] * 3)
+      expect(new_rel.map { |e| e.properties[:foo] }).to eq(['bar'] * 3)
     end
 
     it 'does not relabel relationships already in the requested format' do
@@ -240,19 +238,19 @@ describe Neo4j::Migrations::Helpers do
     it 'relabels a relation' do
       expect do
         relabel_relation :something, :something_else
-      end.to change { query.match('()-[r]-()').pluck(:r).first.rel_type }.from(:something).to(:something_else)
+      end.to change { query.match('()-[r]-()').pluck(:r).first.type }.from(:something).to(:something_else)
     end
 
     it 'relabels a relation giving :from, :to and :direction' do
       expect do
         relabel_relation :something, :something_else, from: :Book, to: :Bookcase, direction: :in
-      end.to change { query.match('()-[r]-()').pluck(:r).first.rel_type }.from(:something).to(:something_else)
+      end.to change { query.match('()-[r]-()').pluck(:r).first.type }.from(:something).to(:something_else)
     end
 
     it 'relabels nothing when giving wrong :from and :to' do
       expect do
         relabel_relation :something, :something_else, from: :Cat, to: :Dog
-      end.not_to change { query.match('()-[r]-()').pluck(:r).first.rel_type }.from(:something)
+      end.not_to change { query.match('()-[r]-()').pluck(:r).first.type }.from(:something)
     end
 
     it 'runs relabeling in batches' do
